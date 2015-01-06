@@ -5,7 +5,7 @@ var Defbox=React.createClass({
   render: function() {
     return(
 	<div>
-		render defbox
+		{this.props.def}
 	</div>	
     ); 
   }

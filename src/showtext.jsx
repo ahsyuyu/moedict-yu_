@@ -8,7 +8,7 @@ var Showtext=React.createClass({
     return (
     <div>
     	<Searchhistory result={this.props.result}/>
-    	<Defbox result={this.props.result} /> 	
+    	<Defbox def={this.props.def} result={this.props.result} /> 	
     </div>
     );
   }

@@ -10,7 +10,7 @@ var maincomponent = React.createClass({
       var entries=db.get("pageNames");
       that.setState({entries:entries});
     });    
-  	return {result:["馬"],searchtype:"start"};
+  	return {result:["搜尋結果列表"],searchtype:"start"};
   },
   indexOfSorted: function (array, obj) { 
     var low = 0,
@@ -19,7 +19,7 @@ var maincomponent = React.createClass({
       var mid = (low + high) >> 1;
       array[mid] < obj ? low = mid + 1 : high = mid;
     }
-    if(array[low] != obj) return null;
+    //if(array[low] != obj) return null;
     return low;
   },
   dosearch: function(tofind,field) {
@@ -43,7 +43,7 @@ var maincomponent = React.createClass({
     var index=this.indexOfSorted(this.state.entries,tofind);
     var i=0;
     while(this.state.entries[index+i].indexOf(tofind)==0){
-      out.push(this.state.entries[index+i]);
+      out.push([this.state.entries[index+i],parseInt(index)+i]);
       i++
     }
     this.setState({result:out});
@@ -55,17 +55,27 @@ var maincomponent = React.createClass({
   
   },
   search_fulltext: function(tofind) {
+    var that=this;
     kse.search("moedict",tofind,{range:{start:0}},function(err,data){
       that.setState({result:data.excerpt});
     }) 
+  },
+  gotoEntry: function(index) {
+    var that=this;
+    kde.open("moedict",function(err,db){
+      //var def=db.get("moedict.fileContents.0."+index);
+      var def=db.get(["fileContents",0,index],function(data){
+        that.setState({def:data});
+      });
+    }); 
   },
   render: function() {
     return(
     <div>
       <Searchbar dosearch={this.dosearch} />
-      <Overview result={this.state.result} />
+      <Overview result={this.state.result} gotoEntry={this.gotoEntry} />
       <br></br><br></br>
-      <Showtext searchtype={this.state.searchtype} tofind={this.state.tofind} result={this.state.result}/>
+      <Showtext def={this.state.def} searchtype={this.state.searchtype} tofind={this.state.tofind} result={this.state.result}/>
     </div>
     );
   }
