@@ -1,0 +1,1 @@
+scaffold for ksana2015 app
