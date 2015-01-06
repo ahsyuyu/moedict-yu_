@@ -10,7 +10,8 @@ var Overview=React.createClass({
   	var result=res.map(this.renderResult);
     return(
 	<div>
-		<div className="col-sm-3">
+    <span id="vertical_center" className="badge">{res.length}</span>
+		<div className="col-sm-2">
 			<select className="form-control">
 			{result}
 			</select>
