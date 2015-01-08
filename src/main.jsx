@@ -23,7 +23,7 @@ var maincomponent = React.createClass({
       this.search_end(tofind);
     }
     if(field=="middle"){
-      
+      this.search_middle(tofind);
     }
     if(field=="fulltext"){
       this.search_fulltext(tofind);
@@ -36,7 +36,7 @@ var maincomponent = React.createClass({
     var i=0;
     while(this.state.entries[index+i].indexOf(tofind)==0){
       out.push([this.state.entries[index+i],parseInt(index)+i]);
-      i++
+      i++;
     }
     this.setState({result:out});
   },
@@ -50,8 +50,16 @@ var maincomponent = React.createClass({
     }
     this.setState({result:out});
   },
-  search_middle: function() {
-  
+  search_middle: function(tofind) {
+    var out=[];
+    var i=0;
+    for(var i=0; i<this.state.entries.length; i++){
+      var ent=this.state.entries[i];
+      if(ent.indexOf(tofind) >-1 && ent.indexOf(tofind)!=0 && ent.indexOf(tofind)!=ent.length-1){
+        out.push([this.state.entries[i],i]);
+      }
+    }
+    this.setState({result:out});  
   },
   search_fulltext: function(tofind) {
     var that=this;
