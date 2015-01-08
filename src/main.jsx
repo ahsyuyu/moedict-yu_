@@ -1,5 +1,6 @@
 var kse=require("ksana-search");
 var kde=require("ksana-database");
+var api=require("./api");
 var Showtext=require("./showtext.jsx");
 var Searchbar=require("./searchbar.jsx");
 var Overview=require("./overview.jsx");
@@ -10,37 +11,28 @@ var maincomponent = React.createClass({
       var entries=db.get("pageNames");
       that.setState({entries:entries});
     });    
-  	return {result:["搜尋結果列表"],searchtype:"start"};
-  },
-  indexOfSorted: function (array, obj) { 
-    var low = 0,
-    high = array.length-1;
-    while (low < high) {
-      var mid = (low + high) >> 1;
-      array[mid] < obj ? low = mid + 1 : high = mid;
-    }
-    //if(array[low] != obj) return null;
-    return low;
+  	return {result:["搜尋結果列表"],searchtype:"start",def:[]};
   },
   dosearch: function(tofind,field) {
+    console.log(field);
     this.setState({tofind:tofind,searchtype:field});
-    if(this.state.searchtype=="start"){
+    if(field=="start"){
       this.search_start(tofind);
     }
-    if(this.state.searchtype=="end"){
+    if(field=="end"){
+      this.search_end(tofind);
+    }
+    if(field=="middle"){
       
     }
-    if(this.state.searchtype=="middle"){
-      
-    }
-    if(this.state.searchtype=="fulltext"){
+    if(field=="fulltext"){
       this.search_fulltext(tofind);
     }
 
   },
   search_start: function(tofind) {
     var out=[];
-    var index=this.indexOfSorted(this.state.entries,tofind);
+    var index=api.indexOfSorted(this.state.entries,tofind);
     var i=0;
     while(this.state.entries[index+i].indexOf(tofind)==0){
       out.push([this.state.entries[index+i],parseInt(index)+i]);
@@ -48,8 +40,14 @@ var maincomponent = React.createClass({
     }
     this.setState({result:out});
   },
-  search_end: function() {
-
+  search_end: function(tofind) {
+    var out=[];
+    var i=0;
+    while(this.state.entries[i].indexOf(tofind)==this.state.entries[i].length-1 && i<this.state.entries.length){
+      out.push(this.state.entries[i]);
+      i++
+    }
+    this.setState({result:out});
   },
   search_middle: function() {
   
@@ -65,7 +63,8 @@ var maincomponent = React.createClass({
     kde.open("moedict",function(err,db){
       //var def=db.get("moedict.fileContents.0."+index);
       var def=db.get(["fileContents",0,index],function(data){
-        that.setState({def:data});
+        var d=data.split("\n");
+        that.setState({def:d});
       });
     }); 
   },

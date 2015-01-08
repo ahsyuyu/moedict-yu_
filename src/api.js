@@ -5,7 +5,7 @@ var indexOfSorted = function (array, obj) {
       var mid = (low + high) >> 1;
       array[mid] < obj ? low = mid + 1 : high = mid;
     }
-    if(array[low] != obj) return null;
+    //if(array[low] != obj) return null;
     return low;
  }
 
@@ -13,6 +13,6 @@ var indexOfSorted = function (array, obj) {
  	console.log(input);
  }
 
- var api={test:test,indexOfSorted:indexOfSorted}
+ var api={test:test,indexOfSorted:indexOfSorted};
 
 module.exports=api;
