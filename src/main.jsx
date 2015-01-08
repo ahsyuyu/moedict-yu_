@@ -43,9 +43,10 @@ var maincomponent = React.createClass({
   search_end: function(tofind) {
     var out=[];
     var i=0;
-    while(this.state.entries[i].indexOf(tofind)==this.state.entries[i].length-1 && i<this.state.entries.length){
-      out.push(this.state.entries[i]);
-      i++
+    for(var i=0; i<this.state.entries.length; i++){
+      if(this.state.entries[i].indexOf(tofind)==this.state.entries[i].length-1){
+        out.push([this.state.entries[i],i]);
+      }
     }
     this.setState({result:out});
   },
