@@ -4,8 +4,10 @@ var Searchhistory=React.createClass({
   },
   
   render: function() {
+  	var s=this.props.entryHistory;
+  	var searchhistory=s.join(" > ");
     return(
-	<div>render Searchhistory</div>
+	<div>{searchhistory}</div>
     	
     ); 
   }

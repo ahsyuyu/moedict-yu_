@@ -11,7 +11,7 @@ var maincomponent = React.createClass({
       var entries=db.get("pageNames");
       that.setState({entries:entries});
     });    
-  	return {result:["搜尋結果列表"],searchtype:"start",def:[]};
+  	return {result:["搜尋結果列表"],searchtype:"start",defs:[],entryIndexes:[]};
   },
   dosearch: function(tofind,field) {
     console.log(field);
@@ -28,7 +28,6 @@ var maincomponent = React.createClass({
     if(field=="fulltext"){
       this.search_fulltext(tofind);
     }
-
   },
   search_start: function(tofind) {
     var out=[];
@@ -67,14 +66,31 @@ var maincomponent = React.createClass({
       that.setState({result:data.excerpt});
     }) 
   },
+  defSearch: function(tofind,reset) {
+    if(reset==1) defs=[];
+    var that=this;
+    var index=api.indexOfSorted(this.state.entries,tofind);
+    if(this.state.entries[index]==tofind){
+      kde.open("moedict",function(err,db){
+        var def=db.get(["fileContents",0,index],function(data){
+          defs.push(data);
+          that.setState({defs:defs});
+          //that.state.defs.push(data);
+        });
+      });    
+    }
+    //that.state.entryIndexes.push();
+  },
   gotoEntry: function(index) {
     var that=this;
+    var defs=[];
     kde.open("moedict",function(err,db){
       //var def=db.get("moedict.fileContents.0."+index);
       var def=db.get(["fileContents",0,index],function(data){
-        var d=data.split("\n");
-        that.setState({def:d});
+        defs.push(data);
+        that.setState({defs:defs});
       });
+      that.state.entryIndexes.push(index);
     }); 
   },
   render: function() {
@@ -83,7 +99,7 @@ var maincomponent = React.createClass({
       <Searchbar dosearch={this.dosearch} />
       <Overview result={this.state.result} gotoEntry={this.gotoEntry} />
       <br></br><br></br>
-      <Showtext def={this.state.def} searchtype={this.state.searchtype} tofind={this.state.tofind} result={this.state.result}/>
+      <Showtext defSearch={this.defSearch} entryIndexes={this.state.entryIndexes} defs={this.state.defs} searchtype={this.state.searchtype} tofind={this.state.tofind} result={this.state.result}/>
     </div>
     );
   }
