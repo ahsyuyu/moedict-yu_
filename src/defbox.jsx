@@ -16,7 +16,6 @@ var Defbox=React.createClass({
           var t1=this.renderDef(t[j],d[i][1]);
           defs.push(t1);
         }
-        //this.setState({entry:t[0]});
       }
     }
     this.setState({definition:defs});

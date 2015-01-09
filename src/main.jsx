@@ -11,11 +11,9 @@ var maincomponent = React.createClass({
       var entries=db.get("segnames");
       that.setState({entries:entries,db:db});
     });    
-  	return {result:["搜尋結果列表"],searchtype:"start",defs:[]};
+  	return {entries:[],result:["搜尋結果列表"],searchtype:"start",defs:[]};
   },
   dosearch: function(tofind,field) {
-    console.log(field);
-    //this.setState({tofind:tofind,searchtype:field});
     if(field=="start"){
       this.search_start(tofind);
     }
