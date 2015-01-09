@@ -1,6 +1,6 @@
 jsonp_handler({
  "version": "1",
- "build": 7,
+ "build": 9,
  "title": "moedict-yu",
  "minruntime": 4,
  "baseurl": "http://rawgit.com/ahsyuyu/moedict-yu/master/",
@@ -11,7 +11,7 @@ jsonp_handler({
   "main.css",
   "jquery.js",
   "bootstrap.min.css",
-  "bootstrap.js.css",
+  "bootstrap.min.js",
   "react-with-addons.js",
   "ksana.js",
   "http://ya.ksana.tw/kdb/moedict.kdb"
@@ -21,18 +21,22 @@ jsonp_handler({
   444,
   117,
   277980,
+  113502,
+  35607,
   644464,
-  669,
+  754,
   50141498
  ],
  "filedates": [
   "2015-01-09T09:15:18.000Z",
-  "2015-01-09T09:49:12.000Z",
+  "2015-01-09T09:55:42.000Z",
   "2015-01-09T09:15:18.000Z",
   "2015-01-09T09:15:18.000Z",
+  "2015-01-09T09:15:17.000Z",
+  "2015-01-09T09:15:17.000Z",
   "2015-01-09T09:15:18.000Z",
-  "2015-01-09T09:48:38.000Z",
+  "2015-01-09T09:55:39.000Z",
   "2015-01-09T09:15:18.000Z"
  ],
- "date": "2015-01-09T09:49:12.468Z"
+ "date": "2015-01-09T09:55:42.446Z"
 })
