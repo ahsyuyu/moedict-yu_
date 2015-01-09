@@ -8,14 +8,14 @@ var maincomponent = React.createClass({
   getInitialState: function() {
     var that=this;
     kde.open("moedict",function(err,db){
-      var entries=db.get("pageNames");
-      that.setState({entries:entries});
+      var entries=db.get("segnames");
+      that.setState({entries:entries,db:db});
     });    
-  	return {result:["搜尋結果列表"],searchtype:"start",defs:[],entryIndexes:[]};
+  	return {result:["搜尋結果列表"],searchtype:"start",defs:[]};
   },
   dosearch: function(tofind,field) {
     console.log(field);
-    this.setState({tofind:tofind,searchtype:field});
+    //this.setState({tofind:tofind,searchtype:field});
     if(field=="start"){
       this.search_start(tofind);
     }
@@ -60,37 +60,43 @@ var maincomponent = React.createClass({
     }
     this.setState({result:out});  
   },
+
   search_fulltext: function(tofind) {
     var that=this;
-    kse.search("moedict",tofind,{range:{start:0}},function(err,data){
-      that.setState({result:data.excerpt});
+    var out=[];
+    kse.search("moedict",tofind,{range:{start:0,maxseg:500}},function(err,data){
+      out=data.excerpt.map(function(item){return [item.segname,item.seg];});
+      that.setState({result:out});
     }) 
+    // kse.highlightSeg(this.state.db,0,{q:tofind,nospan:true},function(data){
+    //   out=data.excerpt.map(function(item){return [item.segname,item.seg];});
+    //   that.setState({result:out});
+    // });
   },
-  defSearch: function(tofind,reset) {
+  defSearch: function(tofind,reset) {//點選def做搜尋就是用defSearch
+    this.setState({tofind:tofind});
     if(reset==1) defs=[];
     var that=this;
     var index=api.indexOfSorted(this.state.entries,tofind);
     if(this.state.entries[index]==tofind){
       kde.open("moedict",function(err,db){
-        var def=db.get(["fileContents",0,index],function(data){
-          defs.push(data);
+        var def=db.get(["filecontents",0,index],function(data){
+          defs.push([data,index]);
           that.setState({defs:defs});
           //that.state.defs.push(data);
         });
       });    
     }
-    //that.state.entryIndexes.push();
   },
-  gotoEntry: function(index) {
+  gotoEntry: function(index) {// 從下拉選單點選的項目or 點searchhistory會用gotoEntry 來顯示def
     var that=this;
     var defs=[];
     kde.open("moedict",function(err,db){
       //var def=db.get("moedict.fileContents.0."+index);
-      var def=db.get(["fileContents",0,index],function(data){
-        defs.push(data);
+      var def=db.get(["filecontents",0,index],function(data){
+        defs.push([data,index]);
         that.setState({defs:defs});
       });
-      that.state.entryIndexes.push(index);
     }); 
   },
   render: function() {
@@ -99,7 +105,7 @@ var maincomponent = React.createClass({
       <Searchbar dosearch={this.dosearch} />
       <Overview result={this.state.result} gotoEntry={this.gotoEntry} />
       <br></br><br></br>
-      <Showtext defSearch={this.defSearch} entryIndexes={this.state.entryIndexes} defs={this.state.defs} searchtype={this.state.searchtype} tofind={this.state.tofind} result={this.state.result}/>
+      <Showtext gotoEntry={this.gotoEntry} defSearch={this.defSearch} defs={this.state.defs} tofind={this.state.tofind} result={this.state.result}/>
     </div>
     );
   }

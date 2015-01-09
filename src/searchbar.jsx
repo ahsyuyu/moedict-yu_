@@ -13,7 +13,7 @@ var Searchbar=React.createClass({
   <div>
   	<div> 
 	  <div className="col-sm-3">
-	    <input className="form-control col-sm-1" type="text" ref="tofind" placeholder="請輸入字詞" onChange={this.dosearch}/>
+	    <input className="form-control col-sm-1" type="text" ref="tofind" placeholder="請輸入字詞" defaultValue="月" onKeyDown={this.dosearch} onChange={this.dosearch}/>
 	  </div>  
 	  <br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;    
 	  <div className="btn-group" data-toggle="buttons" ref="searchtype" onClick={this.dosearch}>

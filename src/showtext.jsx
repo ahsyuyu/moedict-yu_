@@ -2,10 +2,13 @@ var Searchhistory=require("./searchhistory.jsx");
 var Defbox=require("./defbox.jsx");
 var Showtext=React.createClass({
   getInitialState: function() {
-  	return {entryHistory:[]};
+  	return {entryHistory:[],tofind:""};
   },
-  pushHistory: function(entry) {
-    this.state.entryHistory.push(entry);
+  pushHistory: function(searchResult,clickedIndex) {//searchResult [title,titleIndex,tofind]
+    var that=this;
+    searchResult.map(function(item){
+      if(item[1]==clickedIndex) that.state.entryHistory.push(item);
+    });
   },
   dosearch: function(tofind) {
     for(var i=1; i<tofind.length; i++){
@@ -16,9 +19,9 @@ var Showtext=React.createClass({
   render: function() {
     return (
     <div>
-    	<Searchhistory entryHistory={this.state.entryHistory} result={this.props.result}/>
+    	<Searchhistory dosearch={this.dosearch} gotoEntry={this.props.gotoEntry} entryHistory={this.state.entryHistory} result={this.props.result}/>
       <br/>
-    	<Defbox dosearch={this.dosearch} pushHistory={this.pushHistory} entryIndexes={this.props.entryIndexes} defs={this.props.defs} result={this.props.result} /> 	
+    	<Defbox dosearch={this.dosearch} pushHistory={this.pushHistory} defs={this.props.defs} result={this.props.result} /> 	
     </div>
     );
   }
