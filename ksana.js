@@ -7,5 +7,5 @@ jsonp_handler({
 "description":"",
 "files":
   ["index.html","bundle.js","main.css","jquery.js","react-with-addons.js","ksana.js",
-  "http://ya.ksana.tw/kdb/moedict.kdb","api.js"]
+  "http://ya.ksana.tw/kdb/moedict.kdb"]
 })
