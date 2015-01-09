@@ -6,6 +6,6 @@ jsonp_handler({
 "baseurl":"git@rawgit.com:ahsyuyu/moedict-yu/master/",
 "description":"",
 "files":
-  ["index.html","bundle.js","index.css","jquery.js","react-with-addons.js","ksana.js",
+  ["index.html","bundle.js","main.css","jquery.js","react-with-addons.js","ksana.js",
   "http://ya.ksana.tw/kdb/moedict.kdb","api.js"]
 })
